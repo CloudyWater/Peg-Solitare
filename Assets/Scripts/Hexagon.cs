@@ -3,17 +3,19 @@ using System.Collections;
 
 public class Hexagon : MonoBehaviour
 {
+	public float SELECTION_SCALE = 1.2f;
+
 	public SpriteRenderer mBase, mHole, mPeg;
-	public Color mHighlightColor, mNormalColor;
+	public Color mHighlightColor, mNormalHoleColor, mNormalPegColor;
 
 	private Board mBoard;
-	private bool mPegActive;
+	private bool mbIsPegActive, mbIsHighlighted;
 	private int mXposition, mYposition;
 
 	// Use this for initialization
 	void Start ()
 	{
-		mHole.color = mNormalColor;
+		mHole.color = mNormalHoleColor;
 	}
 
 	public void Initiate (int xPosition, int yPosition, Board board)
@@ -34,23 +36,43 @@ public class Hexagon : MonoBehaviour
 	public void EnablePeg (bool bEnabled)
 	{
 		mPeg.enabled = bEnabled;
-		mPegActive = bEnabled;
+		mbIsPegActive = bEnabled;
 	}
 
 	public bool IsPegActive ()
 	{
-		return mPegActive;
+		return mbIsPegActive;
 	}
 
 	public void Highlight (bool bIsHighlighted)
 	{
+		mbIsHighlighted = bIsHighlighted;
 		if (bIsHighlighted)
 		{
 			mHole.color = mHighlightColor;
 		}
 		else
 		{
-			mHole.color = mNormalColor;
+			mHole.color = mNormalHoleColor;
+		}
+	}
+
+	public bool IsHighlighted ()
+	{
+		return mbIsHighlighted;
+	}
+
+	public void Select (bool bIsSelected)
+	{
+		if (bIsSelected)
+		{
+			mPeg.transform.localScale = new Vector3 (SELECTION_SCALE, SELECTION_SCALE, 1);
+			mPeg.color = mHighlightColor;
+		}
+		else
+		{
+			mPeg.transform.localScale = new Vector3 (1, 1, 1);
+			mPeg.color = mNormalPegColor;
 		}
 	}
 

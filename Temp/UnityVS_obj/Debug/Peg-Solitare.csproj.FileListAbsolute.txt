@@ -7,7 +7,6 @@ C:\Users\Thomas\Documents\Peg Solitare\Peg Solitare\Peg-Solitare\Temp\UnityVS_bi
 C:\Users\Thomas\Documents\Peg Solitare\Peg Solitare\Peg-Solitare\Temp\UnityVS_bin\Debug\UnityEngine.dll
 C:\Users\Thomas\Documents\Peg Solitare\Peg Solitare\Peg-Solitare\Temp\UnityVS_bin\Debug\UnityEngine.Networking.dll
 C:\Users\Thomas\Documents\Peg Solitare\Peg Solitare\Peg-Solitare\Temp\UnityVS_bin\Debug\UnityEngine.UI.dll
-C:\Users\Thomas\Documents\Peg Solitare\Peg Solitare\Peg-Solitare\Temp\UnityVS_bin\Debug\UnityEngine.xml
 C:\Users\Thomas\Documents\Peg Solitare\Peg Solitare\Peg-Solitare\Temp\UnityVS_bin\Debug\UnityEngine.UI.xml
 C:\Users\Thomas\Documents\Peg Solitare\Peg Solitare\Peg-Solitare\Temp\UnityVS_bin\Debug\UnityEngine.Networking.xml
 C:\Users\Thomas\Documents\Peg Solitare\Peg Solitare\Peg-Solitare\Temp\UnityVS_bin\Debug\UnityEngine.Analytics.xml

@@ -53,61 +53,138 @@ public class TriangleBoard : Board
 		mBoard [mVacantPositionX, mVacantPositionY].EnablePeg (false);
 	}
 
-	public override void HighlightPossibilities (int xPos, int yPos)
+	public override void ResetBoard ()
 	{
-		// Up + Left
-		if (xPos - 1 >= 0 && yPos - 1 >= 0 && mBoard[xPos - 1, yPos - 1].IsPegActive ())
+		foreach (Hexagon hex in mBoard)
 		{
-			if (xPos - 2 >= 0 && yPos - 2 >= 0 && !mBoard[xPos - 2, yPos - 2].IsPegActive ())
+			if (hex != null)
 			{
-				mBoard [xPos - 2, yPos - 2].Highlight (true);
+				hex.Select (false);
+				hex.Highlight (false);
+				if (hex.GetXPosition () == mVacantPositionX && hex.GetYPosition () == mVacantPositionY)
+				{
+					hex.EnablePeg (false);
+				}
+				else
+				{
+					hex.EnablePeg (true);
+				}
+			}
+		}
+	}
+
+	public override Jump GetJump (Hexagon selected, Hexagon target)
+	{
+		Jump retJump = null;
+		int jumpedXPosition = selected.GetXPosition ();
+		int jumpedYPosition = selected.GetYPosition ();
+
+		if (selected.GetXPosition () > target.GetXPosition ())
+		{
+			jumpedXPosition = selected.GetXPosition () - 1;
+		}
+		else if (selected.GetXPosition () < target.GetXPosition ())
+		{
+			jumpedXPosition = selected.GetXPosition () + 1;
+		}
+
+		if (selected.GetYPosition () > target.GetYPosition ())
+		{
+			jumpedYPosition = selected.GetYPosition () - 1;
+		}
+		else if (selected.GetYPosition () < target.GetYPosition ())
+		{
+			jumpedYPosition = selected.GetYPosition () + 1;
+		}
+
+		Hexagon jumpedHex = mBoard [jumpedXPosition, jumpedYPosition];
+
+		retJump = new Jump (selected, jumpedHex, target);
+
+		return retJump;
+	}
+
+	public override bool IsMovePossible (Hexagon hex)
+	{
+		bool mbIsPossible = false;
+		mbIsPossible = HighlightPossibilities (hex);
+		RemoveHighlights ();
+		return mbIsPossible;
+	}
+
+	public override bool HighlightPossibilities (Hexagon hex)
+	{
+		bool bMoveIsPossible = false;
+
+		// Up + Left
+		if (hex.GetXPosition () - 1 >= 0 && hex.GetYPosition () - 1 >= 0 && mBoard [hex.GetXPosition () - 1,
+			hex.GetYPosition () - 1].IsPegActive ())
+		{
+			if (hex.GetXPosition () - 2 >= 0 && hex.GetYPosition () - 2 >= 0 && !mBoard [hex.GetXPosition () - 2,
+				hex.GetYPosition () - 2].IsPegActive ())
+			{
+				mBoard [hex.GetXPosition () - 2, hex.GetYPosition () - 2].Highlight (true);
+				bMoveIsPossible = true;
 			}
 		}
 
 		// Up + Right
-		if (yPos - 1 >= xPos && mBoard[xPos, yPos - 1].IsPegActive ())
+		if (hex.GetYPosition () - 1 >= hex.GetXPosition () && mBoard [hex.GetXPosition (),
+			hex.GetYPosition () - 1].IsPegActive ())
 		{
-			if (yPos -2 >= xPos && !mBoard[xPos, yPos - 2].IsPegActive ())
+			if (hex.GetYPosition () - 2 >= hex.GetXPosition () && !mBoard [hex.GetXPosition (),
+				hex.GetYPosition () - 2].IsPegActive ())
 			{
-				mBoard [xPos, yPos - 2].Highlight (true);
+				mBoard [hex.GetXPosition (), hex.GetYPosition () - 2].Highlight (true);
+				bMoveIsPossible = true;
 			}
 		}
 
 		// Left
-		if (xPos - 1 >= 0 && mBoard [xPos - 1, yPos].IsPegActive ())
+		if (hex.GetXPosition () - 1 >= 0 && mBoard [hex.GetXPosition () - 1, hex.GetYPosition ()].IsPegActive ())
 		{
-			if (xPos - 2 >= 0 && !mBoard [xPos - 2, yPos].IsPegActive ())
+			if (hex.GetXPosition () - 2 >= 0 && !mBoard [hex.GetXPosition () - 2, hex.GetYPosition ()].IsPegActive ())
 			{
-				mBoard [xPos - 2, yPos].Highlight (true);
+				mBoard [hex.GetXPosition () - 2, hex.GetYPosition ()].Highlight (true);
+				bMoveIsPossible = true;
 			}
 		}
 
 		// Right
-		if (xPos + 1 < yPos && mBoard [xPos + 1, yPos].IsPegActive ())
+		if (hex.GetXPosition () + 1 < hex.GetYPosition () && mBoard [hex.GetXPosition () + 1,
+			hex.GetYPosition ()].IsPegActive ())
 		{
-			if (xPos + 2 < yPos && !mBoard[xPos + 2, yPos].IsPegActive ())
+			if (hex.GetXPosition () + 2 < hex.GetYPosition () && !mBoard [hex.GetXPosition () + 2,
+				hex.GetYPosition ()].IsPegActive ())
 			{
-				mBoard [xPos + 2, yPos].Highlight (true);
+				mBoard [hex.GetXPosition () + 2, hex.GetYPosition ()].Highlight (true);
+				bMoveIsPossible = true;
 			}
 		}
 
 		// Down + Left
-		if (yPos + 1 < mBoardSize && mBoard[xPos, yPos + 1].IsPegActive ())
+		if (hex.GetYPosition () + 1 < mBoardSize && mBoard [hex.GetXPosition (), hex.GetYPosition () + 1].IsPegActive ())
 		{
-			if (yPos + 2 < mBoardSize && !mBoard[xPos, yPos + 2].IsPegActive ())
+			if (hex.GetYPosition () + 2 < mBoardSize && !mBoard [hex.GetXPosition (), hex.GetYPosition () + 2].IsPegActive ())
 			{
-				mBoard [xPos, yPos + 2].Highlight (true);
+				mBoard [hex.GetXPosition (), hex.GetYPosition () + 2].Highlight (true);
+				bMoveIsPossible = true;
 			}
 		}
 
 		// Down + Right
-		if (yPos + 1 < mBoardSize && xPos + 1 < mBoardSize && mBoard[xPos + 1, yPos + 1].IsPegActive ())
+		if (hex.GetYPosition () + 1 < mBoardSize && hex.GetXPosition () + 1 < mBoardSize && mBoard [hex.GetXPosition () + 1,
+			hex.GetYPosition () + 1].IsPegActive ())
 		{
-			if (yPos + 2 < mBoardSize && xPos + 2 < mBoardSize && !mBoard[xPos + 2, yPos + 2].IsPegActive ())
+			if (hex.GetYPosition () + 2 < mBoardSize && hex.GetXPosition () + 2 < mBoardSize && !mBoard [hex.GetXPosition () + 2,
+				hex.GetYPosition () + 2].IsPegActive ())
 			{
-				mBoard [xPos + 2, yPos + 2].Highlight (true);
+				mBoard [hex.GetXPosition () + 2, hex.GetYPosition () + 2].Highlight (true);
+				bMoveIsPossible = true;
 			}
 		}
+
+		return bMoveIsPossible;
 	}
 
 	public override void RemoveHighlights ()
@@ -119,6 +196,11 @@ public class TriangleBoard : Board
 				hex.Highlight (false);
 			}
 		}
+	}
+
+	public Hexagon GetHex (int xPosition, int yPosition)
+	{
+		return mBoard [xPosition, yPosition];
 	}
 }
 

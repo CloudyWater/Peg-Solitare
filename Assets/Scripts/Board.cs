@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class Board : MonoBehaviour
 {
@@ -20,7 +21,13 @@ public abstract class Board : MonoBehaviour
 
 	protected abstract void SetUpBoard ();
 
-	public abstract void HighlightPossibilities (int xPosition, int yPosition);
+	public abstract void ResetBoard ();
+
+	public abstract bool IsMovePossible (Hexagon hex);
+
+	public abstract bool HighlightPossibilities (Hexagon hex);
+
+	public abstract Jump GetJump (Hexagon selected, Hexagon target);
 
 	public abstract void RemoveHighlights ();
 }
