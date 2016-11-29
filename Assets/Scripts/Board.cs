@@ -7,7 +7,7 @@ public abstract class Board : MonoBehaviour
 	public GameObject mHexagonPrefab;
 
 	// Use this for initialization
-	protected virtual void Start ()
+	protected virtual void Awake ()
 	{
 		SetUpBoard ();
 	}
@@ -19,4 +19,8 @@ public abstract class Board : MonoBehaviour
 	}
 
 	protected abstract void SetUpBoard ();
+
+	public abstract void HighlightPossibilities (int xPosition, int yPosition);
+
+	public abstract void RemoveHighlights ();
 }
