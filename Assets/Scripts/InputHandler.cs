@@ -1,4 +1,19 @@
-﻿using UnityEngine;
+﻿//*****************************************************************************
+// File Name:			InputHandler.cs
+// File Author:		Thomas Hyman
+// Date:					11/29/16
+// File Purpose:	Handles all input. The current input flow is as follows:
+//								1.	Player mouses over / taps hex, hex is highlighted if move
+//										is possible.
+//								2.	Player clicks / double taps hex, hex is selected. All
+//										possible moves starting from that hex are highlighted.
+//								3a.	Player clicks / taps another hex, goto 1 / 2.
+//								3b.	Player clicks / taps outside of hexes, deselect hex.
+//								3c.	Player clicks / taps highlighted hole, move completes.
+//*****************************************************************************
+//TODO: create InputHandler base class, subclass TouchInputHandler and MouseInputHandler.
+//			Instantiate only one based on the device it loads on?
+using UnityEngine;
 using System.Collections;
 
 public class InputHandler : MonoBehaviour
@@ -14,7 +29,12 @@ public class InputHandler : MonoBehaviour
 	private float mDoubleTapTimer;
 	private bool mbDoubleTapAvailable, mbSelectionLocked;
 
-	// Use this for initialization
+	//***************************************************************************
+	// Function Name:	Start
+	// Purpose:				Sets up the Input Handler.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	void Start ()
 	{
 		mSelectedHexagon = null;
@@ -22,8 +42,13 @@ public class InputHandler : MonoBehaviour
 		mbSelectionLocked = false;
 		mBoard.RemoveHighlights ();
 	}
-
-	// Update is called once per frame
+	
+	//***************************************************************************
+	// Function Name:	Update
+	// Purpose:				As long as the game is not over, handles input.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	void Update ()
 	{
 		if (!mGameplayUI.IsGameOver ())
@@ -43,6 +68,12 @@ public class InputHandler : MonoBehaviour
 		}
 	}
 
+	//***************************************************************************
+	// Function Name:	HandleMouseInput
+	// Purpose:				Handles the input from the mouse.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	private void HandleMouseInput ()
 	{
 		RaycastHit2D hit;
@@ -104,6 +135,12 @@ public class InputHandler : MonoBehaviour
 		}
 	}
 
+	//***************************************************************************
+	// Function Name:	HandleTouchInput
+	// Purpose:				Handles touch input.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	private void HandleTouchInput ()
 	{
 		Hexagon hitHex;
@@ -161,6 +198,12 @@ public class InputHandler : MonoBehaviour
 		}
 	}
 
+	//***************************************************************************
+	// Function Name:	MakeMove
+	// Purpose:				Finalizes a move.
+	// Paramaters:		target - The end target hex of the move.
+	// Returns:				None
+	//***************************************************************************
 	private void MakeMove (Hexagon target)
 	{
 		int numPegsLeft = 0;
@@ -185,6 +228,12 @@ public class InputHandler : MonoBehaviour
 		}
 	}
 
+	//***************************************************************************
+	// Function Name:	SelectPeg
+	// Purpose:				Attempts to select a peg.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	public void SelectPeg ()
 	{
 		if (mBoard.IsMovePossible (mSelectedHexagon))
@@ -194,6 +243,13 @@ public class InputHandler : MonoBehaviour
 		}
 	}
 
+	//***************************************************************************
+	// Function Name:	HighlightOptions
+	// Purpose:				Highlights all the possible movement options from the
+	//								currently selected hex.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	public void HighlightOptions ()
 	{
 		mBoard.RemoveHighlights ();

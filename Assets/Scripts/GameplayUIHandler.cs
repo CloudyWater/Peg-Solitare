@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿//*****************************************************************************
+// File Name:			GameplayUIHandler.cs
+// File Author:		Thomas Hyman
+// Date:					11/29/16
+// File Purpose:	This class handles the Gameplay UI. This includes setting the
+//								timer, keeping track of remaining time, displaying remaining
+//								time, and displaying the Game Over UI.
+//*****************************************************************************
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
@@ -22,7 +30,13 @@ public class GameplayUIHandler : MonoBehaviour
 	private int mTimeLeft;
 	private float mSecondTimer;
 
-	// Use this for initialization
+	//***************************************************************************
+	// Function Name:	Start
+	// Purpose:				Sets the timer to the max time of 3 minutes, and stops the
+	//								Game Over panel from being displayed.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	void Start ()
 	{
 		mTimeLeft = START_TIME;
@@ -30,7 +44,12 @@ public class GameplayUIHandler : MonoBehaviour
 		mGameOverPanel.SetActive (false);
 	}
 
-	// Update is called once per frame
+	//***************************************************************************
+	// Function Name:	Update
+	// Purpose:				Updates the game timer and displays the remaining time.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	void Update ()
 	{
 		if (!mbIsGameOver)
@@ -53,6 +72,12 @@ public class GameplayUIHandler : MonoBehaviour
 		}
 	}
 
+	//***************************************************************************
+	// Function Name:	GameOver
+	// Purpose:				Displays the Game Over UI.
+	// Paramaters:		bWin - Whether the game was won or lost.
+	// Returns:				None
+	//***************************************************************************
 	public void GameOver (bool bWin)
 	{
 		mGameOverPanel.SetActive (true);
@@ -71,11 +96,23 @@ public class GameplayUIHandler : MonoBehaviour
 		mRemainingTimeText.text = REMAINING_TIME_TEXT + FormatRemainingTime ();
 	}
 
+	//***************************************************************************
+	// Function Name:	FormatRemainingTime
+	// Purpose:				Formats the remaining time to minutes:seconds.
+	// Paramaters:		None
+	// Returns:				string value containing formatted remaining time.
+	//***************************************************************************
 	public string FormatRemainingTime ()
 	{
 		return string.Format ("{0}:{1:D2}", mTimeLeft / 60, (mTimeLeft % 60));
 	}
 
+	//***************************************************************************
+	// Function Name:	ResetLevel
+	// Purpose:				Resets the entire level.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	public void ResetLevel ()
 	{
 		mSecondTimer = 0;
@@ -87,11 +124,23 @@ public class GameplayUIHandler : MonoBehaviour
 		mBoard.ResetBoard ();
 	}
 
+	//***************************************************************************
+	// Function Name:	Quit
+	// Purpose:				Exits to main menu.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	public void Quit ()
 	{
 		SceneManager.LoadScene (MAIN_MENU);
 	}
 
+	//***************************************************************************
+	// Function Name:	IsGameOver
+	// Purpose:				Getter for mbIsGameOver.
+	// Paramaters:		None
+	// Returns:				mbIsGameOver - Changes based on whether the game is finished.
+	//***************************************************************************
 	public bool IsGameOver ()
 	{
 		return mbIsGameOver;

@@ -1,4 +1,14 @@
-﻿using UnityEngine;
+﻿//*****************************************************************************
+// File Name:			Board.cs
+// File Author:		Thomas Hyman
+// Date:					11/29/16
+// File Purpose:	The Abstract Board class. Contains methods to set up the board,
+//								reset the board, clear all board selections, clear all board
+//								highlights, highlight all possible moves from one hex, check
+//								if a hex has possible moves, check if the game is over, and
+//								calculate a Jump from two hex endpoints.
+//*****************************************************************************
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,13 +17,11 @@ public abstract class Board : MonoBehaviour
 
 	public GameObject mHexagonPrefab;
 
-	// Use this for initialization
 	protected virtual void Awake ()
 	{
 		SetUpBoard ();
 	}
 
-	// Update is called once per frame
 	protected virtual void Update ()
 	{
 

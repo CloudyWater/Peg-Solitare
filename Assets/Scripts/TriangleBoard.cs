@@ -1,4 +1,11 @@
-﻿using UnityEngine;
+﻿//*****************************************************************************
+// File Name:			TriangleBoard.cs
+// File Author:		Thomas Hyman
+// Date:					11/29/16
+// File Purpose:	Contains the TriangleBoard Board subclass. Triangle boards
+//								have a special set of rules that can be applied to them.
+//*****************************************************************************
+using UnityEngine;
 using System.Collections;
 using System;
 
@@ -8,18 +15,35 @@ public class TriangleBoard : Board
 	public int mVacantPositionX, mVacantPositionY;
 	private Hexagon [,] mBoard;
 
-	// Use this for initialization
+	//***************************************************************************
+	// Function Name:	Awake
+	// Purpose:				Called upon Object Instantiation.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	protected override void Awake ()
 	{
 		base.Awake ();
 	}
 
-	// Update is called once per frame
+	//***************************************************************************
+	// Function Name:	Update
+	// Purpose:				Called once per frame. Calls back to Base class.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	protected override void Update ()
 	{
 		base.Update ();
 	}
 
+	//***************************************************************************
+	// Function Name:	SetUpBoard
+	// Purpose:				Instantiates all the hexes for a triangle board, and places
+	//								them in the scene.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	protected override void SetUpBoard ()
 	{
 		mBoard = new Hexagon [mBoardSize, mBoardSize];
@@ -53,6 +77,12 @@ public class TriangleBoard : Board
 		mBoard [mVacantPositionX, mVacantPositionY].EnablePeg (false);
 	}
 
+	//***************************************************************************
+	// Function Name:	ResetBoard
+	// Purpose:				Resets the state of the board to the initial state.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	public override void ResetBoard ()
 	{
 		foreach (Hexagon hex in mBoard)
@@ -73,6 +103,14 @@ public class TriangleBoard : Board
 		}
 	}
 
+	//***************************************************************************
+	// Function Name:	GetJump
+	// Purpose:				Creates a Jump based upon a starting hexagon and an ending
+	//								hexagon.
+	// Paramaters:		selected	- the starting hexagon.
+	//								target		- the ending hexagon.
+	// Returns:				retJump		- the resulting Jump.
+	//***************************************************************************
 	public override Jump GetJump (Hexagon selected, Hexagon target)
 	{
 		Jump retJump = null;
@@ -104,6 +142,12 @@ public class TriangleBoard : Board
 		return retJump;
 	}
 
+	//***************************************************************************
+	// Function Name:	IsMovePossible
+	// Purpose:				Checks if there are any moves starting at the passed in hex.
+	// Paramaters:		hex						- The hexagon to check for possible moves.
+	// Returns:				mbIsPossible	- Whether there are any moves
+	//***************************************************************************
 	public override bool IsMovePossible (Hexagon hex)
 	{
 		bool mbIsPossible = false;
@@ -112,6 +156,12 @@ public class TriangleBoard : Board
 		return mbIsPossible;
 	}
 
+	//***************************************************************************
+	// Function Name:	IsGameOver
+	// Purpose:				Checks if the game is over.
+	// Paramaters:		out numPegsLeft - returns the number of remaining pegs.
+	// Returns:				bIsGameOver			- Whether or not the game is over.
+	//***************************************************************************
 	public override bool IsGameOver (out int numPegsLeft)
 	{
 		bool bIsGameOver = true;
@@ -131,6 +181,12 @@ public class TriangleBoard : Board
 		return bIsGameOver;
 	}
 
+	//***************************************************************************
+	// Function Name:	HighlightPossibilities
+	// Purpose:				Highlights all the possible moves from the passed in hex.
+	// Paramaters:		hex							- The hex to check from.
+	// Returns:				bMoveIsPossible - Whether or not there are possible moves.
+	//***************************************************************************
 	public override bool HighlightPossibilities (Hexagon hex)
 	{
 		bool bMoveIsPossible = false;
@@ -206,6 +262,12 @@ public class TriangleBoard : Board
 		return bMoveIsPossible;
 	}
 
+	//***************************************************************************
+	// Function Name:	RemoveHighlights
+	// Purpose:				Sets all hexes to not be highlighted.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	public override void RemoveHighlights ()
 	{
 		foreach (Hexagon hex in mBoard)
@@ -217,6 +279,12 @@ public class TriangleBoard : Board
 		}
 	}
 
+	//***************************************************************************
+	// Function Name:	ClearSelections
+	// Purpose:				Clears all selected pegs.
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
 	public override void ClearSelections ()
 	{
 		foreach (Hexagon hex in mBoard)
@@ -228,6 +296,13 @@ public class TriangleBoard : Board
 		}
 	}
 
+	//***************************************************************************
+	// Function Name:	GetHex
+	// Purpose:				Returns the hex at the passed in co-ordinates.
+	// Paramaters:		xPosition - The x Position of the hex to get.
+	//								yPosition - The y Position of the hex to get.
+	// Returns:				The hexagon at the desired position.
+	//***************************************************************************
 	public Hexagon GetHex (int xPosition, int yPosition)
 	{
 		return mBoard [xPosition, yPosition];
