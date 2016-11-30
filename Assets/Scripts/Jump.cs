@@ -11,7 +11,17 @@ using System.Collections.Generic;
 
 public class Jump
 {
+	[Serializable]
+	public struct SaveData
+	{
+		public int mStartX, mStartY;
+		public int mJumpedX, mJumpedY;
+		public int mEndX, mEndY;
+		public int mTimeLeft;
+	}
+
 	private Hexagon mStartHex, mJumpedHex, mEndHex;
+	private int mRemainingTime;
 
 	//***************************************************************************
 	// Function Name:	Jump
@@ -21,11 +31,12 @@ public class Jump
 	//								endHex		- The ending hex of the jump.
 	// Returns:				None
 	//***************************************************************************
-	public Jump (Hexagon startHex, Hexagon jumpedHex, Hexagon endHex)
+	public Jump (Hexagon startHex, Hexagon jumpedHex, Hexagon endHex, int remainingTime)
 	{
 		mStartHex = startHex;
 		mJumpedHex = jumpedHex;
 		mEndHex = endHex;
+		mRemainingTime = remainingTime;
 	}
 
 	//***************************************************************************
@@ -59,5 +70,52 @@ public class Jump
 	public Hexagon GetEndHex ()
 	{
 		return mEndHex;
+	}
+
+	//***************************************************************************
+	// Function Name:	GetRemainingTime
+	// Purpose:				Returns the time left at the time of the jump
+	// Paramaters:		None
+	// Returns:				mRemainingTime - Time remaining after jump.
+	//***************************************************************************
+	public int GetRemainingTime ()
+	{
+		return mRemainingTime;
+	}
+
+	//***************************************************************************
+	// Function Name:	GetSaveData
+	// Purpose:				Returns a SaveData struct with all the needed data
+	// Paramaters:		None
+	// Returns:				retData - Save data struct, filled with Jump data.
+	//***************************************************************************
+	public SaveData GetSaveData ()
+	{
+		SaveData retData = new SaveData ();
+		retData.mStartX = mStartHex.GetXPosition ();
+		retData.mStartY = mStartHex.GetYPosition ();
+		retData.mJumpedX = mJumpedHex.GetXPosition ();
+		retData.mJumpedY = mJumpedHex.GetYPosition ();
+		retData.mEndX = mEndHex.GetXPosition ();
+		retData.mEndY = mEndHex.GetYPosition ();
+		retData.mTimeLeft = mRemainingTime;
+
+		return retData;
+	}
+
+	//***************************************************************************
+	// Function Name:	CreateFromData
+	// Purpose:				Creates a Jump from a SaveData struct
+	// Paramaters:		None
+	// Returns:				Jump - The created Jump.
+	//***************************************************************************
+	public static Jump CreateFromData (Board board, SaveData data)
+	{
+		Hexagon startHex = board.GetHex (data.mStartX, data.mStartY);
+		Hexagon jumpedHex = board.GetHex (data.mJumpedX, data.mJumpedY);
+		Hexagon endHex = board.GetHex (data.mEndX, data.mEndY);
+		Jump retJump = new Jump (startHex, jumpedHex, endHex, data.mTimeLeft);
+
+		return retJump;
 	}
 }

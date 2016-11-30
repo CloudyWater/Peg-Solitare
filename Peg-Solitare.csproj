@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Board.cs" />
+    <Compile Include="Assets\Scripts\GameDataManager.cs" />
     <Compile Include="Assets\Scripts\GameplayUIHandler.cs" />
     <Compile Include="Assets\Scripts\Hexagon.cs" />
     <Compile Include="Assets\Scripts\HexagonBoard.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Assets\Scripts\Jump.cs" />
     <Compile Include="Assets\Scripts\MenuUIHandler.cs" />
     <Compile Include="Assets\Scripts\Move.cs" />
+    <Compile Include="Assets\Scripts\ReplayHandler.cs" />
     <Compile Include="Assets\Scripts\TriangleBoard.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -13,6 +13,8 @@
 //*****************************************************************************
 //TODO: create InputHandler base class, subclass TouchInputHandler and MouseInputHandler.
 //			Instantiate only one based on the device it loads on?
+//			State Machine for Input
+
 using UnityEngine;
 using System.Collections;
 
@@ -40,7 +42,7 @@ public class InputHandler : MonoBehaviour
 		mSelectedHexagon = null;
 		mbDoubleTapAvailable = false;
 		mbSelectionLocked = false;
-		mBoard.RemoveHighlights ();
+		mBoard.SetUpBoard ();
 	}
 	
 	//***************************************************************************
@@ -212,6 +214,7 @@ public class InputHandler : MonoBehaviour
 		jump.GetJumpedHex ().EnablePeg (false);
 		jump.GetEndHex ().EnablePeg (true);
 		mBoard.ClearSelections ();
+		GameDataManager.mSingleton.AddJump (jump);
 		mbSelectionLocked = false;
 		if (mBoard.IsGameOver (out numPegsLeft))
 		{
@@ -225,6 +228,8 @@ public class InputHandler : MonoBehaviour
 				// Win the game
 				mGameplayUI.GameOver (true);
 			}
+
+			GameDataManager.mSingleton.WriteGameToFile (GameDataManager.TRIANGLE, Board.mBoardSize);
 		}
 	}
 

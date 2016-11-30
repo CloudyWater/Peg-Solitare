@@ -27,7 +27,7 @@ public class GameplayUIHandler : MonoBehaviour
 	public Text mTimerText;
 
 	private bool mbIsGameOver;
-	private int mTimeLeft;
+	private static int mTimeLeft;
 	private float mSecondTimer;
 
 	//***************************************************************************
@@ -61,7 +61,7 @@ public class GameplayUIHandler : MonoBehaviour
 				mTimeLeft -= 1;
 			}
 
-			string timerText = FormatRemainingTime ();
+			string timerText = FormatRemainingTime (mTimeLeft);
 
 			mTimerText.text = timerText;
 
@@ -93,7 +93,7 @@ public class GameplayUIHandler : MonoBehaviour
 			mWinLossText.text = GAME_OVER_TEXT + LOSS_TEXT;
 		}
 
-		mRemainingTimeText.text = REMAINING_TIME_TEXT + FormatRemainingTime ();
+		mRemainingTimeText.text = REMAINING_TIME_TEXT + FormatRemainingTime (mTimeLeft);
 	}
 
 	//***************************************************************************
@@ -102,9 +102,9 @@ public class GameplayUIHandler : MonoBehaviour
 	// Paramaters:		None
 	// Returns:				string value containing formatted remaining time.
 	//***************************************************************************
-	public string FormatRemainingTime ()
+	public static string FormatRemainingTime (int timeLeft)
 	{
-		return string.Format ("{0}:{1:D2}", mTimeLeft / 60, (mTimeLeft % 60));
+		return string.Format ("{0}:{1:D2}", timeLeft / 60, (timeLeft % 60));
 	}
 
 	//***************************************************************************
@@ -144,5 +144,10 @@ public class GameplayUIHandler : MonoBehaviour
 	public bool IsGameOver ()
 	{
 		return mbIsGameOver;
+	}
+
+	public static int GetRemainingTime ()
+	{
+		return mTimeLeft;
 	}
 }

@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿//*****************************************************************************
+// File Name:			MenuUIHandler.cs
+// File Author:		Thomas Hyman
+// Date:					11/30/16
+// File Purpose:	Controls the flow of the main menu.
+//*****************************************************************************
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
@@ -6,6 +12,7 @@ using System.Collections;
 public class MenuUIHandler : MonoBehaviour
 {
 	private const string TRIANGLE_SCENE = "PlayTriangle";
+	private const string REPLAY_SCENE = "ReplayScene";
 	private const int EASY_SIZE = 4;
 	private const int MEDIUM_SIZE = 5;
 	private const int HARD_SIZE = 6;
@@ -44,5 +51,10 @@ public class MenuUIHandler : MonoBehaviour
 		}
 
 		SceneManager.LoadScene (TRIANGLE_SCENE);
+	}
+
+	public void LoadReplay ()
+	{
+		SceneManager.LoadScene (REPLAY_SCENE);
 	}
 }

@@ -11,7 +11,7 @@ using System;
 
 public class TriangleBoard : Board
 {
-	public static int mBoardSize;
+
 	public static int mVacantPositionX, mVacantPositionY;
 	private Hexagon [,] mBoard;
 
@@ -21,9 +21,8 @@ public class TriangleBoard : Board
 	// Paramaters:		None
 	// Returns:				None
 	//***************************************************************************
-	protected override void Awake ()
+	protected override void Start ()
 	{
-		base.Awake ();
 	}
 
 	//***************************************************************************
@@ -44,7 +43,7 @@ public class TriangleBoard : Board
 	// Paramaters:		None
 	// Returns:				None
 	//***************************************************************************
-	protected override void SetUpBoard ()
+	public override void SetUpBoard ()
 	{
 		mBoard = new Hexagon [mBoardSize, mBoardSize];
 		GameObject rowBase, hexObject;
@@ -137,7 +136,7 @@ public class TriangleBoard : Board
 
 		Hexagon jumpedHex = mBoard [jumpedXPosition, jumpedYPosition];
 
-		retJump = new Jump (selected, jumpedHex, target);
+		retJump = new Jump (selected, jumpedHex, target, GameplayUIHandler.GetRemainingTime ());
 
 		return retJump;
 	}
@@ -303,7 +302,7 @@ public class TriangleBoard : Board
 	//								yPosition - The y Position of the hex to get.
 	// Returns:				The hexagon at the desired position.
 	//***************************************************************************
-	public Hexagon GetHex (int xPosition, int yPosition)
+	public override Hexagon GetHex (int xPosition, int yPosition)
 	{
 		return mBoard [xPosition, yPosition];
 	}

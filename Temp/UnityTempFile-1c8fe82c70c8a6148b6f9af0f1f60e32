@@ -87,12 +87,15 @@
 -define:UNITY_TEAM_LICENSE
 -define:ENABLE_VSTU
 Assets/Scripts/Board.cs
+Assets/Scripts/GameDataManager.cs
 Assets/Scripts/GameplayUIHandler.cs
 Assets/Scripts/Hexagon.cs
 Assets/Scripts/HexagonBoard.cs
 Assets/Scripts/InputHandler.cs
 Assets/Scripts/Jump.cs
+Assets/Scripts/MenuUIHandler.cs
 Assets/Scripts/Move.cs
+Assets/Scripts/ReplayHandler.cs
 Assets/Scripts/TriangleBoard.cs
 -r:"C:\Program Files (x86)\Unity\Editor\Data\Mono\lib\mono\unity\System.Runtime.Serialization.dll"
 -r:"C:\Program Files (x86)\Unity\Editor\Data\Mono\lib\mono\unity\System.Xml.Linq.dll"

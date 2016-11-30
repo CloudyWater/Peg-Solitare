@@ -14,12 +14,13 @@ using System.Collections.Generic;
 
 public abstract class Board : MonoBehaviour
 {
+	public static int mBoardSize;
 
 	public GameObject mHexagonPrefab;
 
-	protected virtual void Awake ()
+	protected virtual void Start ()
 	{
-		SetUpBoard ();
+
 	}
 
 	protected virtual void Update ()
@@ -27,7 +28,7 @@ public abstract class Board : MonoBehaviour
 
 	}
 
-	protected abstract void SetUpBoard ();
+	public abstract void SetUpBoard ();
 
 	public abstract void ResetBoard ();
 
@@ -42,4 +43,6 @@ public abstract class Board : MonoBehaviour
 	public abstract bool IsGameOver (out int numPegsLeft);
 
 	public abstract void RemoveHighlights ();
+
+	public abstract Hexagon GetHex (int xPosition, int yPosition);
 }
