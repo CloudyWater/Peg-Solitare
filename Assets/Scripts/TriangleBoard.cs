@@ -112,6 +112,25 @@ public class TriangleBoard : Board
 		return mbIsPossible;
 	}
 
+	public override bool IsGameOver (out int numPegsLeft)
+	{
+		bool bIsGameOver = true;
+		numPegsLeft = 0;
+		foreach (Hexagon hex in mBoard)
+		{
+			if (hex != null && hex.IsPegActive ())
+			{
+				if (IsMovePossible (hex))
+				{
+					bIsGameOver = false;
+				}
+				numPegsLeft++;
+			}
+		}
+
+		return bIsGameOver;
+	}
+
 	public override bool HighlightPossibilities (Hexagon hex)
 	{
 		bool bMoveIsPossible = false;
@@ -151,10 +170,10 @@ public class TriangleBoard : Board
 		}
 
 		// Right
-		if (hex.GetXPosition () + 1 < hex.GetYPosition () && mBoard [hex.GetXPosition () + 1,
+		if (hex.GetXPosition () + 1 <= hex.GetYPosition () && mBoard [hex.GetXPosition () + 1,
 			hex.GetYPosition ()].IsPegActive ())
 		{
-			if (hex.GetXPosition () + 2 < hex.GetYPosition () && !mBoard [hex.GetXPosition () + 2,
+			if (hex.GetXPosition () + 2 <= hex.GetYPosition () && !mBoard [hex.GetXPosition () + 2,
 				hex.GetYPosition ()].IsPegActive ())
 			{
 				mBoard [hex.GetXPosition () + 2, hex.GetYPosition ()].Highlight (true);
@@ -194,6 +213,17 @@ public class TriangleBoard : Board
 			if (hex != null)
 			{
 				hex.Highlight (false);
+			}
+		}
+	}
+
+	public override void ClearSelections ()
+	{
+		foreach (Hexagon hex in mBoard)
+		{
+			if (hex != null)
+			{
+				hex.Select (false);
 			}
 		}
 	}

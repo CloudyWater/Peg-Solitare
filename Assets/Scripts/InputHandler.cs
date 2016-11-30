@@ -8,6 +8,7 @@ public class InputHandler : MonoBehaviour
 
 	public Camera mMainCamera;
 	public Board mBoard;
+	public GameplayUIHandler mGameplayUI;
 
 	private Hexagon mSelectedHexagon;
 	private float mDoubleTapTimer;
@@ -25,19 +26,21 @@ public class InputHandler : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		// Mouse Contols
-		HandleMouseInput ();
-
-		// Touch Controls
-		HandleTouchInput ();
-
-		mDoubleTapTimer += Time.deltaTime;
-
-		if (mDoubleTapTimer >= DOUBLE_TAP_LENGTH)
+		if (!mGameplayUI.IsGameOver ())
 		{
-			mbDoubleTapAvailable = false;
-		}
+			// Mouse Contols
+			HandleMouseInput ();
 
+			// Touch Controls
+			HandleTouchInput ();
+
+			mDoubleTapTimer += Time.deltaTime;
+
+			if (mDoubleTapTimer >= DOUBLE_TAP_LENGTH)
+			{
+				mbDoubleTapAvailable = false;
+			}
+		}
 	}
 
 	private void HandleMouseInput ()
@@ -54,21 +57,21 @@ public class InputHandler : MonoBehaviour
 			hitHex = hit.collider.gameObject.GetComponent<Hexagon> ();
 			if (mSelectedHexagon != null && !hitHex.Equals (mSelectedHexagon))
 			{
-				SelectPeg (false);
+				mBoard.ClearSelections ();
 				mSelectedHexagon = hitHex;
-				SelectPeg (true);
+				SelectPeg ();
 			}
 			else if (mSelectedHexagon == null)
 			{
 				mSelectedHexagon = hitHex;
-				SelectPeg (true);
+				SelectPeg ();
 			}
 		}
 		else if (!mbSelectionLocked)
 		{
 			if (mSelectedHexagon != null)
 			{
-				SelectPeg (false);
+				mBoard.ClearSelections ();
 			}
 			mSelectedHexagon = null;
 		}
@@ -89,13 +92,13 @@ public class InputHandler : MonoBehaviour
 				}
 				else
 				{
-					SelectPeg (false);
+					mBoard.ClearSelections ();
 					mbSelectionLocked = false;
 				}
 			}
 			else if (mbSelectionLocked && hit.collider == null)
 			{
-				SelectPeg (false);
+				mBoard.ClearSelections ();
 				mbSelectionLocked = false;
 			}
 		}
@@ -132,16 +135,16 @@ public class InputHandler : MonoBehaviour
 						MakeMove (hitHex);
 					}
 
-					if (mSelectedHexagon != null && !hitHex.Equals (mSelectedHexagon))
+					if (mSelectedHexagon != null && !hitHex.Equals (mSelectedHexagon) && !mbSelectionLocked)
 					{
-						SelectPeg (false);
+						mBoard.ClearSelections ();
 						mSelectedHexagon = hitHex;
-						SelectPeg (true);
+						SelectPeg ();
 					}
-					else if (mSelectedHexagon == null)
+					else if (mSelectedHexagon == null && !mbSelectionLocked)
 					{
 						mSelectedHexagon = hitHex;
-						SelectPeg (true);
+						SelectPeg ();
 					}
 
 					mbDoubleTapAvailable = true;
@@ -149,11 +152,9 @@ public class InputHandler : MonoBehaviour
 				}
 				else
 				{
-					if (mSelectedHexagon != null)
-					{
-						SelectPeg (false);
-					}
+					mBoard.ClearSelections ();
 					mSelectedHexagon = null;
+					mbSelectionLocked = false;
 					mBoard.RemoveHighlights ();
 				}
 			}
@@ -162,21 +163,34 @@ public class InputHandler : MonoBehaviour
 
 	private void MakeMove (Hexagon target)
 	{
+		int numPegsLeft = 0;
 		Jump jump = mBoard.GetJump (mSelectedHexagon, target);
 		jump.GetStartHex ().EnablePeg (false);
 		jump.GetJumpedHex ().EnablePeg (false);
 		jump.GetEndHex ().EnablePeg (true);
-		SelectPeg (false);
+		mBoard.ClearSelections ();
 		mbSelectionLocked = false;
-		Debug.Log ("Jumped position " + jump.GetJumpedHex ().GetXPosition () + "," + jump.GetJumpedHex ().GetYPosition ());
+		if (mBoard.IsGameOver (out numPegsLeft))
+		{
+			if (numPegsLeft > 1)
+			{
+				// Lose the game
+				mGameplayUI.GameOver (false);
+			}
+			else if (numPegsLeft == 1)
+			{
+				// Win the game
+				mGameplayUI.GameOver (true);
+			}
+		}
 	}
 
-	public void SelectPeg (bool bIsSelected)
+	public void SelectPeg ()
 	{
 		if (mBoard.IsMovePossible (mSelectedHexagon))
 		{
 			mBoard.RemoveHighlights ();
-			mSelectedHexagon.Select (bIsSelected);
+			mSelectedHexagon.Select (true);
 		}
 	}
 
