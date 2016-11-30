@@ -1,0 +1,14 @@
+﻿<?xml version="1.0"?>
+<doc>
+	<assembly>
+		<name>UnityEditor.iOS.Extensions.Common</name>
+	</assembly>
+	<members>
+		<member name="T:UnityEditor.iOS.BuildPipeline">
+			<summary></summary>
+		</member>
+		<member name="T:UnityEditor.iOS.DeviceType">
+			<summary></summary>
+		</member>
+	</members>
+</doc>

@@ -11,8 +11,8 @@ using System;
 
 public class TriangleBoard : Board
 {
-	public int mBoardSize;
-	public int mVacantPositionX, mVacantPositionY;
+	public static int mBoardSize;
+	public static int mVacantPositionX, mVacantPositionY;
 	private Hexagon [,] mBoard;
 
 	//***************************************************************************
