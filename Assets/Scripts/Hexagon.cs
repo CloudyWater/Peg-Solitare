@@ -17,7 +17,7 @@ public class Hexagon : MonoBehaviour
 	public Color mHighlightColor, mNormalHoleColor, mNormalPegColor;
 
 	private Board mBoard;
-	private bool mbIsPegActive, mbIsHighlighted;
+	private bool mbIsPegActive, mbIsHighlighted, mbIsDisplayed;
 	private int mXposition, mYposition;
 
 	//***************************************************************************
@@ -29,6 +29,7 @@ public class Hexagon : MonoBehaviour
 	void Start ()
 	{
 		mHole.color = mNormalHoleColor;
+		mbIsDisplayed = true;
 	}
 
 	//***************************************************************************
@@ -126,6 +127,29 @@ public class Hexagon : MonoBehaviour
 			mPeg.transform.localScale = new Vector3 (1, 1, 1);
 			mPeg.color = mNormalPegColor;
 		}
+	}
+
+
+	//***************************************************************************
+	// Function Name:	Display
+	// Purpose:				Sets the visible elements of the Hex's visibility.
+	// Paramaters:		bDisplay - The visibility of the Hex.
+	// Returns:				None
+	//***************************************************************************
+	public void Display (bool bDisplay)
+	{
+		mBase.enabled = mPeg.enabled = mHole.enabled = mbIsDisplayed = bDisplay;
+	}
+
+	//***************************************************************************
+	// Function Name:	IsDisplayed
+	// Purpose:				Returns whether the hex is visible
+	// Paramaters:		None
+	// Returns:				None
+	//***************************************************************************
+	public bool IsDisplayed ()
+	{
+		return mbIsDisplayed;
 	}
 
 	//***************************************************************************

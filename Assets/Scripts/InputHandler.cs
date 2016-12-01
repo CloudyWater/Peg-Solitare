@@ -42,7 +42,14 @@ public class InputHandler : MonoBehaviour
 		mSelectedHexagon = null;
 		mbDoubleTapAvailable = false;
 		mbSelectionLocked = false;
-		mBoard.SetUpBoard ();
+		if (mBoard.GetType ().Equals (typeof (HexagonBoard)))
+		{
+			((HexagonBoard) mBoard).LoadFromFile (Board.mLevelName);
+		}
+		else
+		{
+			mBoard.SetUpBoard ();
+		}
 	}
 	
 	//***************************************************************************

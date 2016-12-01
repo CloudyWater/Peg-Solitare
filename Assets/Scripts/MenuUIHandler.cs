@@ -11,8 +11,9 @@ using System.Collections;
 
 public class MenuUIHandler : MonoBehaviour
 {
-	private const string TRIANGLE_SCENE = "PlayTriangle";
-	private const string REPLAY_SCENE = "ReplayScene";
+	public const string TRIANGLE_SCENE = "PlayTriangle";
+	public const string REPLAY_SCENE = "ReplayScene";
+	public const string MENU_SCENE = "MainMenu";
 	private const int EASY_SIZE = 4;
 	private const int MEDIUM_SIZE = 5;
 	private const int HARD_SIZE = 6;

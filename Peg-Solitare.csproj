@@ -79,6 +79,8 @@
     <Compile Include="Assets\Scripts\HexagonBoard.cs" />
     <Compile Include="Assets\Scripts\InputHandler.cs" />
     <Compile Include="Assets\Scripts\Jump.cs" />
+    <Compile Include="Assets\Scripts\LevelEditorHandler.cs" />
+    <Compile Include="Assets\Scripts\ListElement.cs" />
     <Compile Include="Assets\Scripts\MenuUIHandler.cs" />
     <Compile Include="Assets\Scripts\Move.cs" />
     <Compile Include="Assets\Scripts\ReplayHandler.cs" />

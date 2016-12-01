@@ -6,6 +6,7 @@
 //*****************************************************************************
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class ReplayHandler : MonoBehaviour
@@ -58,5 +59,10 @@ public class ReplayHandler : MonoBehaviour
 
 			mRemainingTimeText.text = GameplayUIHandler.FormatRemainingTime (move.GetRemainingTime ());
 		}
+	}
+
+	public void ExitReplay ()
+	{
+		SceneManager.LoadScene (MenuUIHandler.MENU_SCENE);
 	}
 }
