@@ -27,9 +27,16 @@ public class InputHandler : MonoBehaviour
 	public Board mBoard;
 	public GameplayUIHandler mGameplayUI;
 
-	private Hexagon mSelectedHexagon;
+	private Hexagon mSelectedHexagon, mTargetHexagon;
 	private float mDoubleTapTimer;
 	private bool mbDoubleTapAvailable, mbSelectionLocked;
+
+	private enum BoardState
+	{
+		None, Hover, Selecting, Selected, Confirming, Confirmed, Canceled
+	}
+
+	private BoardState mState;
 
 	//***************************************************************************
 	// Function Name:	Start
@@ -50,8 +57,9 @@ public class InputHandler : MonoBehaviour
 		{
 			mBoard.SetUpBoard ();
 		}
+		mState = BoardState.None;
 	}
-	
+
 	//***************************************************************************
 	// Function Name:	Update
 	// Purpose:				As long as the game is not over, handles input.
@@ -92,56 +100,75 @@ public class InputHandler : MonoBehaviour
 		mousePosition = mMainCamera.ScreenToWorldPoint (Input.mousePosition);
 		hit = Physics2D.Raycast (mousePosition, Vector2.zero, 0f, LayerMask.GetMask (HEXAGON_LAYER));
 
-		if (hit.collider != null && !mbSelectionLocked)
+		switch (mState)
 		{
-			hitHex = hit.collider.gameObject.GetComponent<Hexagon> ();
-			if (mSelectedHexagon != null && !hitHex.Equals (mSelectedHexagon))
-			{
-				mBoard.ClearSelections ();
-				mSelectedHexagon = hitHex;
-				SelectPeg ();
-			}
-			else if (mSelectedHexagon == null)
-			{
-				mSelectedHexagon = hitHex;
-				SelectPeg ();
-			}
-		}
-		else if (!mbSelectionLocked)
-		{
-			if (mSelectedHexagon != null)
-			{
-				mBoard.ClearSelections ();
-			}
-			mSelectedHexagon = null;
-		}
-
-		if (Input.GetMouseButtonDown (0))
-		{
-			if (!mbSelectionLocked && mSelectedHexagon != null)
-			{
-				HighlightOptions ();
-				mbSelectionLocked = true;
-			}
-			else if (mbSelectionLocked && hit.collider != null)
-			{
-				hitHex = hit.collider.gameObject.GetComponent<Hexagon> ();
-				if (hitHex.IsHighlighted ())
+			case BoardState.None:
+				if (hit.collider != null)
 				{
-					MakeMove (hitHex);
+					hitHex = hit.collider.GetComponent<Hexagon> ();
+					mSelectedHexagon = hitHex;
+					mState = BoardState.Hover;
+				}
+				break;
+			case BoardState.Hover:
+				if (hit.collider != null)
+				{
+					mBoard.ClearSelections ();
+					hitHex = hit.collider.GetComponent<Hexagon> ();
+					mSelectedHexagon = hitHex;
+					SelectPeg ();
+					if (Input.GetMouseButtonDown (0))
+					{
+						mState = BoardState.Selecting;
+					}
 				}
 				else
 				{
 					mBoard.ClearSelections ();
-					mbSelectionLocked = false;
+					mState = BoardState.None;
 				}
-			}
-			else if (mbSelectionLocked && hit.collider == null)
-			{
+				break;
+			case BoardState.Selecting:
+				HighlightOptions ();
+				mState = BoardState.Selected;
+				break;
+			case BoardState.Selected:
+				if (Input.GetMouseButtonDown (0))
+				{
+					if (hit.collider != null)
+					{
+						hitHex = hit.collider.GetComponent<Hexagon> ();
+						if (hitHex.IsHighlighted ())
+						{
+							mTargetHexagon = hitHex;
+							mState = BoardState.Confirming;
+						}
+						else
+						{
+							mState = BoardState.Canceled;
+						}
+						mBoard.RemoveHighlights ();
+					}
+					else
+					{
+						mBoard.RemoveHighlights ();
+						mState = BoardState.Canceled;
+					}
+				}
+				break;
+			case BoardState.Confirming:
+				mState = BoardState.Confirmed;
+				break;
+			case BoardState.Confirmed:
+				MakeMove (mTargetHexagon);
+				mState = BoardState.None;
+				break;
+			case BoardState.Canceled:
 				mBoard.ClearSelections ();
-				mbSelectionLocked = false;
-			}
+				mState = BoardState.None;
+				break;
 		}
+		Debug.Log (mState);
 	}
 
 	//***************************************************************************
